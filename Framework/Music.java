@@ -1,28 +1,126 @@
-package shreyk.o.Framework;
+package shreyk.god.Framework;
+
+import android.content.res.AssetFileDescriptor;
+import android.media.MediaPlayer;
+
+import java.io.IOException;
 
 /**
- * Created by Shrey on 10/24/2015.
+ * Created by Shrey on 12/16/2015.
  */
+public class Music implements MediaPlayer.OnCompletionListener, MediaPlayer.OnSeekCompleteListener, MediaPlayer.OnPreparedListener, MediaPlayer.OnVideoSizeChangedListener {
+    MediaPlayer mediaPlayer;
+    boolean isPrepared = false;
 
-public interface Music {
-    public void play();
+    public Music(AssetFileDescriptor assetDescriptor) {
+        mediaPlayer = new MediaPlayer();
+        try {
+            mediaPlayer.setDataSource(assetDescriptor.getFileDescriptor(),
+                    assetDescriptor.getStartOffset(),
+                    assetDescriptor.getLength());
+            mediaPlayer.prepare();
+            isPrepared = true;
+            mediaPlayer.setOnCompletionListener(this);
+            mediaPlayer.setOnSeekCompleteListener(this);
+            mediaPlayer.setOnPreparedListener(this);
+            mediaPlayer.setOnVideoSizeChangedListener(this);
 
-    public void stop();
+        } catch (Exception e) {
+            throw new RuntimeException("Couldn't load music");
+        }
+    }
 
-    public void pause();
+    public void dispose() {
 
-    public void setLooping(boolean looping);
+        if (this.mediaPlayer.isPlaying()) {
+            this.mediaPlayer.stop();
+        }
+        this.mediaPlayer.release();
+    }
 
-    public void setVolume(float volume);
+    public boolean isLooping() {
+        return mediaPlayer.isLooping();
+    }
 
-    public boolean isPlaying();
+    public boolean isPlaying() {
+        return this.mediaPlayer.isPlaying();
+    }
 
-    public boolean isStopped();
+    public boolean isStopped() {
+        return !isPrepared;
+    }
 
-    public boolean isLooping();
+    public void pause() {
+        if (this.mediaPlayer.isPlaying())
+            mediaPlayer.pause();
+    }
 
-    public void dispose();
+    public void play() {
+        if (this.mediaPlayer.isPlaying())
+            return;
 
-    void seekBegin();
+        try {
+            synchronized (this) {
+                if (!isPrepared)
+                    mediaPlayer.prepare();
+                mediaPlayer.start();
+            }
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void setLooping(boolean isLooping) {
+        mediaPlayer.setLooping(isLooping);
+    }
+
+    public void setVolume(float volume) {
+        mediaPlayer.setVolume(volume, volume);
+    }
+
+    public void stop() {
+        if (this.mediaPlayer.isPlaying() == true) {
+            this.mediaPlayer.stop();
+
+            synchronized (this) {
+                isPrepared = false;
+            }
+        }
+    }
+
+    @Override
+    public void onCompletion(MediaPlayer player) {
+        synchronized (this) {
+            isPrepared = false;
+        }
+    }
+
+    public void seekBegin() {
+        mediaPlayer.seekTo(0);
+
+    }
+
+
+    @Override
+    public void onPrepared(MediaPlayer player) {
+        // TODO Auto-generated method stub
+        synchronized (this) {
+            isPrepared = true;
+        }
+
+    }
+
+    @Override
+    public void onSeekComplete(MediaPlayer player) {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void onVideoSizeChanged(MediaPlayer player, int width, int height) {
+        // TODO Auto-generated method stub
+
+    }
 }
-

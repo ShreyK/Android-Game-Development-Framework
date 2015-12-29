@@ -1,7 +1,7 @@
-package shreyk.o.Framework;
+package shreyk.god.Framework;
 
 /**
- * Created by Shrey on 10/24/2015.
+ * Created by Shrey on 12/16/2015.
  */
 public abstract class Screen {
     protected final Game game;

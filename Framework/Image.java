@@ -1,11 +1,32 @@
-package shreyk.o.Framework;
+package shreyk.god.Framework;
+
+import android.graphics.Bitmap;
 
 /**
- * Created by Shrey on 10/24/2015.
+ * Created by Shrey on 12/16/2015.
  */
-public interface Image {
-    public int getWidth();
-    public int getHeight();
-    public Graphics.ImageFormat getFormat();
-    public void dispose();
+public class Image {
+    Bitmap bitmap;
+    Graphics.ImageFormat format;
+
+    public Image(Bitmap bitmap, Graphics.ImageFormat format) {
+        this.bitmap = bitmap;
+        this.format = format;
+    }
+
+    public int getWidth() {
+        return bitmap.getWidth();
+    }
+
+    public int getHeight() {
+        return bitmap.getHeight();
+    }
+
+    public Graphics.ImageFormat getFormat() {
+        return format;
+    }
+
+    public void dispose() {
+        bitmap.recycle();
+    }
 }

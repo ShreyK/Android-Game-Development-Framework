@@ -1,17 +1,14 @@
-package shreyk.o.Framework;
+package shreyk.god.Framework;
 
-/**
- * Created by Shrey on 10/24/2015.
- */
-
-import android.view.View.OnTouchListener;
+import android.view.View;
 
 import java.util.List;
 
-import shreyk.o.Framework.Input;
+/**
+ * Created by Shrey on 12/16/2015.
+ */
 
-
-public interface TouchHandler extends OnTouchListener {
+public interface TouchHandler extends View.OnTouchListener {
     public boolean isTouchDown(int pointer);
 
     public int getTouchX(int pointer);

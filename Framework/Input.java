@@ -1,12 +1,15 @@
-package shreyk.o.Framework;
+package shreyk.god.Framework;
+
+import android.content.Context;
+import android.os.Build;
+import android.view.View;
 
 import java.util.List;
 
 /**
- * Created by Shrey on 10/24/2015.
+ * Created by Shrey on 12/16/2015.
  */
-public interface Input {
-
+public class Input {
     public static class TouchEvent {
         public static final int TOUCH_DOWN = 0;
         public static final int TOUCH_UP = 1;
@@ -16,15 +19,30 @@ public interface Input {
         public int type;
         public int x, y;
         public int pointer;
-
-
     }
 
-    public boolean isTouchDown(int pointer);
+    TouchHandler touchHandler;
 
-    public int getTouchX(int pointer);
+    public Input(Context context, View view, float scaleX, float scaleY) {
+        if (Integer.parseInt(Build.VERSION.SDK) < 5)
+            touchHandler = new SingleTouchHandler(view, scaleX, scaleY);
+        else
+            touchHandler = new MultiTouchHandler(view, scaleX, scaleY);
+    }
 
-    public int getTouchY(int pointer);
+    public boolean isTouchDown(int pointer) {
+        return touchHandler.isTouchDown(pointer);
+    }
 
-    public List<TouchEvent> getTouchEvents();
+    public int getTouchX(int pointer) {
+        return touchHandler.getTouchX(pointer);
+    }
+
+    public int getTouchY(int pointer) {
+        return touchHandler.getTouchY(pointer);
+    }
+
+    public List<TouchEvent> getTouchEvents() {
+        return touchHandler.getTouchEvents();
+    }
 }
