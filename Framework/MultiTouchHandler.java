@@ -1,4 +1,4 @@
-package shreyk.god.Framework;
+package shreyk.o.Framework;
 
 import android.view.MotionEvent;
 import android.view.View;
@@ -6,8 +6,8 @@ import android.view.View;
 import java.util.ArrayList;
 import java.util.List;
 
-import shreyk.god.Framework.Input.TouchEvent;
-import shreyk.god.Framework.Pool.PoolObjectFactory;
+import shreyk.o.Framework.Input.TouchEvent;
+import shreyk.o.Framework.Pool.PoolObjectFactory;
 
 /**
  * Created by Shrey on 12/16/2015.

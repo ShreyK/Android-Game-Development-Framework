@@ -1,6 +1,6 @@
-package shreyk.god.Framework;
+package shreyk.o.Framework;
 
-import shreyk.god.Framework.Input.TouchEvent;
+import shreyk.o.Framework.Input.TouchEvent;
 
 import android.view.MotionEvent;
 import android.view.View;
